@@ -1,21 +1,20 @@
 def caesar_cipher (message, shift)
-    ordinals = message.chars.map {|x| x.ord}
-    shifted_ordinals =  ordinals.map do |x|
-        if (64 < x && x < 91) || (96 < x && x < 123)
-            x + shift
-        else
-            x = x
+    coded_message = []
+    alpha = "abcdefghijklmnopqrstuvwxyz"
+    lower_key = alpha.split("")
+    lower_key.rotate!(shift)
+    upper_key = lower_key.map(&:upcase)
+    for i in 0..message.length
+        j = alpha.split("").index(message[i].to_s.downcase)
+        if lower_key.include?(message[i])
+            coded_message.push(lower_key[j])
+        elsif upper_key.include?(message[i])
+            coded_message.push(upper_key[j])
+        else 
+            coded_message.push(message[i])
         end
     end
-    shifted_ordinals.map! do |x|
-        if x > 122
-            x -= 26
-        elsif (90 < x && x < 97)
-            x -= 26
-        else
-            x = x
-        end
-    end
-    coded_chars = shifted_ordinals.map {|x| x.chr}
-    coded_str = coded_chars.join
+    coded_message.join
 end
+
+puts caesar_cipher("Dogs are so COOL dude!!", 20)
